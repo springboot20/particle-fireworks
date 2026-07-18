@@ -6,7 +6,7 @@ const DEVICE_PIXEL_RATIO = window.devicePixelRatio || 1;
 const FRICTION = 0.99;
 // const GRAVITY = 0.08;
 
-const fireworkSound = new Audio("/audio/firework.wav");
+const fireworkSound = new Audio("./audio/firework.wav");
 fireworkSound.preload = "auto";
 fireworkSound.volume = 0.35;
 
