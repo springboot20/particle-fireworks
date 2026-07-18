@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Recap</title>
+
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+
+    <style>
+      *,
+      *::after,
+      *::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: content-box;
+      }
+
+      body div {
+        overflow: hidden;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      canvas {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <script src="./canvas.js"></script>
+  </body>
+</html>
