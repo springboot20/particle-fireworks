@@ -58,6 +58,21 @@ class Particle {
 
     canvasContext.save();
     canvasContext.globalAlpha = this.alpha;
+
+    const gradient = canvasContext.createRadialGradient(
+      xPosition,
+      yPosition,
+      0,
+      xPosition,
+      yPosition,
+      this.radius,
+    );
+
+    gradient.addColorStop(0, "#ffffff");
+    gradient.addColorStop(0.2, "#fff8dc");
+    gradient.addColorStop(0.5, this.color);
+    gradient.addColorStop(1, "transparent");
+
     canvasContext.beginPath();
     canvasContext.arc(
       xPosition,
@@ -67,7 +82,13 @@ class Particle {
       endAngle,
       false,
     );
-    canvasContext.fillStyle = this.color;
+
+    canvasContext.fillStyle = gradient;
+
+    // Glow
+    canvasContext.shadowBlur = this.radius * 0.1;
+    canvasContext.shadowColor = this.color;
+
     canvasContext.fill();
     canvasContext.restore();
   };
@@ -95,8 +116,10 @@ class Particle {
 let animationId = undefined;
 
 function initialize() {
+  // canvasContext.globalCompositeOperation = "source-over";
   canvasContext.fillStyle = "rgba(0, 0, 0, 0.1)";
   canvasContext.fillRect(0, 0, canvasElement.width, canvasElement.height);
+  // canvasContext.globalCompositeOperation = "lighter";
 
   for (let i = particlesArray.length - 1; i >= 0; i--) {
     particlesArray[i].update();
@@ -113,10 +136,22 @@ const rangeFromRandom = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
-const PARTICLE_COUNT_PER_CLICK = 100;
+const PARTICLE_COUNT_PER_CLICK = 200;
+
+const FIREWORK_PALETTES = [
+  ["#ff3b30", "#ff6b35", "#ff9500", "#ffd166"], // Fire
+  ["#ffe066", "#ffd43b", "#fcc419", "#fab005"], // Gold
+  ["#4dabf7", "#339af0", "#228be6", "#74c0fc"], // Blue
+  ["#69db7c", "#51cf66", "#40c057", "#8ce99a"], // Green
+  ["#da77f2", "#cc5de8", "#be4bdb", "#e599f7"], // Purple
+  ["#ff8787", "#ff6b6b", "#fa5252", "#ffb3b3"], // Red
+];
 
 window.addEventListener("pointerdown", (event) => {
   const rect = canvasElement.getBoundingClientRect();
+
+  const palette =
+    FIREWORK_PALETTES[Math.floor(Math.random() * FIREWORK_PALETTES.length)];
 
   const clientX = event.clientX - rect.left;
   const clientY = event.clientY - rect.top;
@@ -137,6 +172,7 @@ window.addEventListener("pointerdown", (event) => {
   for (let index = 0; index < PARTICLE_COUNT_PER_CLICK; index++) {
     const angle = (Math.PI * 2 * index) / PARTICLE_COUNT_PER_CLICK;
     const speed = rangeFromRandom(3, 7);
+    const color = palette[Math.floor(Math.random() * palette.length)];
 
     const position = {
       xPosition: clientX,
@@ -151,8 +187,8 @@ window.addEventListener("pointerdown", (event) => {
     const newParticle = new Particle(
       position,
       velocity,
-      rangeFromRandom(4, 20),
-      `hsl(${Math.random() * 360}, 50%, 50%)`,
+      rangeFromRandom(2, 10),
+      color,
     );
 
     particlesArray.push(newParticle);
