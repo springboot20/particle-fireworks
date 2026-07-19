@@ -321,8 +321,12 @@ class Particle {
 let animationId = undefined;
 
 function initialize() {
+  canvasContext.globalCompositeOperation = "source-over";
+
   canvasContext.fillStyle = "rgba(0,0,0,0.1)";
   canvasContext.fillRect(0, 0, canvasElement.width, canvasElement.height);
+
+  canvasContext.globalCompositeOperation = "lighter";
 
   for (let i = smokeParticles.length - 1; i >= 0; i--) {
     smokeParticles[i].update();
@@ -357,7 +361,7 @@ const rangeFromRandom = (min, max) => {
 
 const LOW_END = navigator.hardwareConcurrency <= 4;
 
-const PARTICLE_COUNT_PER_CLICK = LOW_END ? 35 : 70;
+const PARTICLE_COUNT_PER_CLICK = LOW_END ? 35 : 100;
 
 const SMOKE_COUNT = LOW_END ? 8 : 15;
 
